@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My To-Do List App</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+
+  <body>
+    <h1>📝 My To-Do List</h1>
+
+    <div class="input-container">
+      <input type="text" id="todoText" placeholder="Enter a new task" />
+      <input type="date" id="todoDate" />
+      <button class="add-btn">Add Task</button>
+    </div>
+
+    <ul id="todoList"></ul>
+
+    <script>
+      let todos = [];
+
+      const clicked = document.querySelector(".add-btn");
+      clicked.addEventListener("click", () => {
+        addTodo();
+      });
+      function addTodo() {
+        const todoText = document.getElementById("todoText").value.trim();
+        const todoDate = document.getElementById("todoDate").value;
+
+        if (todoText === "" || todoDate === "") {
+          alert("Please enter both a task and a date!");
+          return;
+        }
+
+        todos.push({ text: todoText, date: todoDate });
+
+        document.getElementById("todoText").value = "";
+        document.getElementById("todoDate").value = "";
+
+        displayTodos();
+      }
+
+      function displayTodos() {
+        const list = document.getElementById("todoList");
+        list.innerHTML = "";
+
+        for (let i = 0; i < todos.length; i++) {
+          const li = document.createElement("li");
+          li.textContent = todos[i].text;
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "date";
+          dateSpan.textContent = `(${todos[i].date})`;
+
+          const delBtn = document.createElement("button");
+          delBtn.textContent = "Delete";
+          delBtn.className = "delete-btn";
+          delBtn.addEventListener("click", function () {
+            todos.splice(i, 1);
+            displayTodos();
+          });
+
+          li.appendChild(dateSpan);
+          li.appendChild(delBtn);
+          list.appendChild(li);
+        }
+      }
+    </script>
+  </body>
+</html>
